@@ -1,0 +1,1 @@
+07-11 15:40:56.748: E/AndroidRuntime(201): java.lang.RuntimeException: Unable to instantiate activity ComponentInfo{cx.ath.worm.zimdroid/cx.ath.worm.zimdroid.select_notepad}: java.lang.NullPointerException

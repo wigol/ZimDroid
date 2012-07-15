@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="?android:attr/listPreferredItemHeight" 
+	android:padding="6dip">
+    
+	<TextView
+            android:id="@+id/txtPage"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:singleLine="true"
+            android:gravity="center_vertical" />
+	
+	<Button 
+	    android:id="@+id/btnEnter"
+        android:layout_width="50dip"
+        android:layout_height="wrap_content"
+        android:text=">" />
+	
+</LinearLayout>
