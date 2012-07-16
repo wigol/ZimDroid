@@ -3,7 +3,12 @@ package cx.ath.worm.zimdroid;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.util.EncodingUtils;
+
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +19,24 @@ import android.widget.TextView;
 import cx.ath.worm.zimdroid.ZimNotepad.ZimPage;
 
 public class FolderViewAdapter extends BaseAdapter {
-	
+	private LayoutInflater mInflater;
 	private Context mContext;
 	private List<ZimPage> mPages = new ArrayList<ZimPage>();
 	
-	public FolderViewAdapter(Context context, int res, ArrayList<ZimPage> Pages) {
+	public static String iso (String s)	{
+		byte bytes[] = EncodingUtils.getBytes(s,"iso-8859-1");
+		return new String(bytes);
+	}
+	
+	public static String utf (String s)	{
+		byte bytes[] = EncodingUtils.getBytes(s,"utf-8");
+		return new String(bytes);
+	}
+	
+	public FolderViewAdapter(Context context, ArrayList<ZimPage> Pages) {
 		mContext = context;
 		mPages = Pages;
+		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
 	@Override
@@ -38,28 +54,49 @@ public class FolderViewAdapter extends BaseAdapter {
 		return position;
 	}
 	
-	public static class ViewHolder {
-		public TextView pagename;
-		public Button nextdir;
-	}
-	
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
+	public View getView(final int position, View convertView, final ViewGroup parent) {
 		View row = convertView;
-		final ViewHolder holder = new ViewHolder(); 
 		if(row == null) {
 			Log.i("ZimDroid", "Creating row layout...");
-			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row=inflater.inflate(R.layout.row, parent, false);
-			holder.pagename = (TextView)row.findViewById(R.id.txtPage);
-			holder.nextdir = (Button)row.findViewById(R.id.btnEnter);
-			holder.pagename.setText(mPages.get(position).getName());
-			Log.i("ZimDroid", "Adding item: "+mPages.get(position).getName());
-			if(mPages.get(position).getChildren() == 0) {
-				holder.nextdir.setVisibility(0x8); //GONE
-			}
+			row=mInflater.inflate(R.layout.row, null);
 		}
+		TextView pagename = (TextView)row.findViewById(R.id.txtPage);
+		Button nextdir = (Button)row.findViewById(R.id.btnEnter);
+		nextdir.setVisibility(Button.GONE);
+		pagename.setText(iso(mPages.get(position).getName()));
+		Log.i("ZimDroid", "Adding item: "+mPages.get(position).getName()+" / kids:"+mPages.get(position).getChildren());
+		Log.i("ZimDroid","Adapter: "+mPages.get(position).getName()+" gC: "+mPages.get(position).getChildren());
+		if(mPages.get(position).getChildren() != 0) {
+			nextdir.setVisibility(Button.VISIBLE);
+		}
+		row.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i("ZimDroid","ListClick: "+mPages.get(position).getName());
+				Intent intDisplayPage = new Intent(v.getContext(),display_page.class);
+       			Bundle bundle = new Bundle();
+       			bundle.putString("page_path", mPages.get(position).getPath().getPath());
+       			bundle.putString("prev_view", mPages.get(position).getPath().getParent());
+       			intDisplayPage.putExtras(bundle);
+       			intDisplayPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        		mContext.startActivity(intDisplayPage);
+			}
+		});
+		
+		nextdir.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.i("ZimDroid","BtnClick: "+mPages.get(position).getName());
+				Intent intDisplayFolder = new Intent(v.getContext(),display_folder.class);
+       			Bundle bundle = new Bundle();
+       			bundle.putString("notepad_path", mPages.get(position).getPath().getPath());
+       			bundle.putString("folder_inside", mPages.get(position).getPath().getParent());
+       			intDisplayFolder.putExtras(bundle);
+       			intDisplayFolder.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        		mContext.startActivity(intDisplayFolder);
+			}
+		});
 		return row;
 	}
 	

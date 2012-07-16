@@ -15,6 +15,8 @@ import android.util.Log;
 
 public class ZimNotepad {
 	
+
+	
 	class ZimPage {
 		private String Name = "";
 		private String Content = "";
@@ -27,6 +29,7 @@ public class ZimNotepad {
 			Name = name;
 			try {
 				if(fullPath.exists()) {
+					Log.i("ZimDroid",fullPath.getPath()+" exists!");
 					BufferedReader reader = new BufferedReader(new FileReader(fullPath));
 					String line;
 					while( (line = reader.readLine()) != null) {
@@ -36,6 +39,7 @@ public class ZimNotepad {
 					reader.close();
 				}
 				else {
+					Log.i("ZimDroid", "ZimPage: attempt to write: "+fullPath.getPath());
 					fullPath.createNewFile();
 					Content = getDefaultContent();
 					FileWriter writer = new FileWriter(fullPath);
@@ -44,18 +48,21 @@ public class ZimNotepad {
 				}
 			}
 			catch(IOException e) {
-				Log.i("ZimDroid", "Failed to read page "+fullPath+".");
+				Log.i("ZimDroid", "ZimPage:Failed to read page "+fullPath+"::"+e.getLocalizedMessage());
 			}
 			}
 			
 		public int getChildren() {
-			File kat = new File(Location.getPath()+Name);
+			File kat = new File(Location.getParent()+"/"+Name+"/");
+			Log.i("ZimDroid", "gC: "+kat.getPath());
 			children.clear();
 			if(kat.exists() && kat.isDirectory()) {
 				String[] pliki = kat.list();
 				for(String apped : pliki) {
-					if(apped.contains(".txt"))
+					if(apped.contains(".txt")) {
 						children.add(new ZimPage(apped.substring(0,apped.length()-4), kat));
+						Log.i("ZimDroid","Child added: "+apped.substring(0,apped.length()-4));
+					}
 				}
 				return children.size();
 			}
@@ -71,6 +78,10 @@ public class ZimNotepad {
 		
 		public String getName() {
 			return Name;
+		}
+		
+		public File getPath() {
+			return Location;
 		}
 	}
 	
@@ -102,8 +113,10 @@ public class ZimNotepad {
 			if(kat.exists() && kat.isDirectory()) {
 				String[] pliki = kat.list();
 				for(String apped : pliki) {
-					if(apped.contains(".txt"))
+					if(apped.contains(".txt")) {
 						pages.add(new ZimPage(apped.substring(0,apped.length()-4), kat));
+						Log.i("ZimDroid", "Page added: "+apped.substring(0,apped.length()-4));
+					}
 				}
 			}
 		}
@@ -113,5 +126,9 @@ public class ZimNotepad {
 		catch(IOException e) {
 			Log.i("ZimDroid", "EXC: IOException while reading zim file. ");
 		}
+	}
+	
+	public ArrayList<ZimPage> getChildrenByPath(String spath) {
+		return pages;
 	}
 }

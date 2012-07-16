@@ -20,35 +20,30 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f080000;
-        public static final int btnAdd=0x7f080002;
-        public static final int btnAddNotepad=0x7f080008;
-        public static final int btnEnter=0x7f08000a;
-        public static final int btnRootNote=0x7f080003;
-        public static final int edtName=0x7f080001;
-        public static final int lstFiles=0x7f080004;
-        public static final int lstNotepads=0x7f080007;
-        public static final int mdView=0x7f080005;
-        public static final int menu_settings=0x7f08000c;
-        public static final int rowtext=0x7f08000b;
-        public static final int txtPage=0x7f080009;
-        public static final int txtPath=0x7f080006;
+        public static final int LinearLayout1=0x7f080003;
+        public static final int btnAddNotepad=0x7f080005;
+        public static final int btnEnter=0x7f080007;
+        public static final int lstFiles=0x7f080000;
+        public static final int lstNotepads=0x7f080004;
+        public static final int mdView=0x7f080001;
+        public static final int menu_settings=0x7f080009;
+        public static final int rowtext=0x7f080008;
+        public static final int txtPage=0x7f080006;
+        public static final int txtPath=0x7f080002;
     }
     public static final class layout {
-        public static final int activity_add_notepad=0x7f030000;
-        public static final int activity_display_folder=0x7f030001;
-        public static final int activity_display_page=0x7f030002;
-        public static final int activity_select_file=0x7f030003;
-        public static final int activity_select_notepad=0x7f030004;
-        public static final int row=0x7f030005;
-        public static final int rowfile=0x7f030006;
+        public static final int activity_display_folder=0x7f030000;
+        public static final int activity_display_page=0x7f030001;
+        public static final int activity_select_file=0x7f030002;
+        public static final int activity_select_notepad=0x7f030003;
+        public static final int row=0x7f030004;
+        public static final int rowfile=0x7f030005;
     }
     public static final class menu {
-        public static final int activity_add_notepad=0x7f070000;
-        public static final int activity_display_folder=0x7f070001;
-        public static final int activity_display_page=0x7f070002;
-        public static final int activity_select_file=0x7f070003;
-        public static final int activity_select_notepad=0x7f070004;
+        public static final int activity_display_folder=0x7f070000;
+        public static final int activity_display_page=0x7f070001;
+        public static final int activity_select_file=0x7f070002;
+        public static final int activity_select_notepad=0x7f070003;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

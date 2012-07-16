@@ -1,8 +1,5 @@
 package cx.ath.worm.zimdroid;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -22,14 +19,13 @@ import cx.ath.worm.zimdroid.ZimNotepad.ZimPage;
 public class display_folder extends Activity {
 	
 	FolderViewAdapter pages_adapter = null;
-	ListView lstFiles;
-	Button btnRootNote;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_folder);
-    	lstFiles = (ListView) findViewById(R.id.lstFiles);
+        Context ctx = getApplicationContext();
+    	ListView lstFiles = (ListView) findViewById(R.id.lstFiles);
     	if(lstFiles == null)
     		Log.i("ZimDroid", "lstFiles NULL!");
         Log.i("ZimDroid", "inicjalizacja activity");
@@ -41,11 +37,13 @@ public class display_folder extends Activity {
         	finish();
         ZimNotepad notepad = new ZimNotepad(notepad_file);
         if(folder_inside == null) {
-        	this.pages_adapter = new FolderViewAdapter(this, R.layout.rowfile, notepad.pages);
-       		Log.i("ZimDroid", "Pages in root dir: "+String.valueOf(notepad.pages.size()));
-        	lstFiles.setAdapter(this.pages_adapter);
-        	pages_adapter.notifyDataSetChanged();
-        	lstFiles.setVisibility(ListView.VISIBLE);
+        	pages_adapter = new FolderViewAdapter(ctx, notepad.pages);
+       		lstFiles.setAdapter(pages_adapter);
+       		Log.i("ZimDroid", "Pages in root dir: "+String.valueOf(pages_adapter.getCount()));
+       		pages_adapter.notifyDataSetChanged();
+        }
+        else {
+        	
         }
     }
 

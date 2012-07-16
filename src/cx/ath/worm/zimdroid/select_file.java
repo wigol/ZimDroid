@@ -100,16 +100,4 @@ public class select_file extends ListActivity {
         getMenuInflater().inflate(R.menu.activity_select_file, menu);
         return true;
     }
-
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }
