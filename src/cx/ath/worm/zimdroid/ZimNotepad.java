@@ -21,12 +21,14 @@ public class ZimNotepad {
 		private String Name = "";
 		private String Content = "";
 		private File Location;
+		private File Notepad;
 		private ArrayList<ZimPage> children = new ArrayList<ZimPage>();
 		
-		ZimPage(String name, File location) {
+		ZimPage(String name, File location, File notepad_file) {
 			File fullPath = new File(location.getPath()+"/"+name+".txt");
 			Location = fullPath;
 			Name = name;
+			Notepad = notepad_file;
 			try {
 				if(fullPath.exists()) {
 					Log.i("ZimDroid",fullPath.getPath()+" exists!");
@@ -60,7 +62,7 @@ public class ZimNotepad {
 				String[] pliki = kat.list();
 				for(String apped : pliki) {
 					if(apped.contains(".txt")) {
-						children.add(new ZimPage(apped.substring(0,apped.length()-4), kat));
+						children.add(new ZimPage(apped.substring(0,apped.length()-4), kat, Notepad));
 						Log.i("ZimDroid","Child added: "+apped.substring(0,apped.length()-4));
 					}
 				}
@@ -80,11 +82,28 @@ public class ZimNotepad {
 			return Name;
 		}
 		
+		public String getPrintName() {
+			return Name.replace("_", " ");
+		}
+		
 		public File getPath() {
 			return Location;
 		}
+		
+		public File getOwnFolder() {
+			if(children.size() > 0) {
+				File own = new File(Location.getParent()+"/"+Name);
+				return own;
+			}
+			else
+				return null;
+		}
+		
+		public File getNotepadFile() {
+			return Notepad;
+		}
 	}
-	
+		
 	public String name = null;
 	public String version = null;
 	public String home = null;
@@ -114,7 +133,7 @@ public class ZimNotepad {
 				String[] pliki = kat.list();
 				for(String apped : pliki) {
 					if(apped.contains(".txt")) {
-						pages.add(new ZimPage(apped.substring(0,apped.length()-4), kat));
+						pages.add(new ZimPage(apped.substring(0,apped.length()-4), kat, zimFile));
 						Log.i("ZimDroid", "Page added: "+apped.substring(0,apped.length()-4));
 					}
 				}
@@ -127,8 +146,38 @@ public class ZimNotepad {
 			Log.i("ZimDroid", "EXC: IOException while reading zim file. ");
 		}
 	}
+	public ZimPage getPageByName(String Nazwa, ArrayList<ZimPage> pagez) {
+		for(ZimPage akt : pagez) {
+			if(akt.Name.equals(Nazwa)) {
+				Log.i("ZimDroid","PageByName found:"+akt.getName());
+				return akt;
+			}
+				
+		}
+		return null;
+	}
 	
 	public ArrayList<ZimPage> getChildrenByPath(String spath) {
-		return pages;
+		Log.i("ZimDroid", "gCBP:"+spath+" / NC: "+zimFile.getParent());
+		ArrayList<ZimPage> lista = pages;
+		ZimPage testing;
+		if(spath.contains("/")) {
+			String[] whole_path = spath.split("/");
+			for(String onepath : whole_path) {
+				if(getPageByName(onepath, lista) != null) {
+					testing = getPageByName(onepath, lista);
+					testing.getChildren();
+					lista = testing.children;
+					Log.i("ZimDroid", "Children:"+lista.size());
+				}	
+			}
+		}
+		else {
+			testing = getPageByName(spath, lista);
+			testing.getChildren();
+			lista = testing.children;
+			Log.i("ZimDroid", "Children:"+lista.size());
+		}
+		return lista;
 	}
 }

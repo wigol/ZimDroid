@@ -21,13 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".add_notepad"
-            android:label="@string/title_activity_add_notepad" >
-            <intent-filter>
-
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".display_page"
             android:label="@string/title_activity_display_page" >
             <intent-filter>

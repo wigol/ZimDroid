@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <us.feras.mdv.MarkdownView
+    <WebView
         android:id="@+id/mdView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -11,6 +11,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" >
 
-    </us.feras.mdv.MarkdownView>
+    </WebView>
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package cx.ath.worm.zimdroid;
 
+import java.io.File;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -37,14 +39,16 @@ public class display_folder extends Activity {
         	finish();
         ZimNotepad notepad = new ZimNotepad(notepad_file);
         if(folder_inside == null) {
-        	pages_adapter = new FolderViewAdapter(ctx, notepad.pages);
-       		lstFiles.setAdapter(pages_adapter);
-       		Log.i("ZimDroid", "Pages in root dir: "+String.valueOf(pages_adapter.getCount()));
-       		pages_adapter.notifyDataSetChanged();
+        	pages_adapter = new FolderViewAdapter(ctx, notepad.pages);       		
         }
         else {
-        	
+        	Log.i("ZimDroid", "folder_inside:"+folder_inside);
+        	String sciezka = folder_inside.substring((new File(notepad_file).getParent()+"/").length(), folder_inside.length());
+        	pages_adapter = new FolderViewAdapter(ctx, notepad.getChildrenByPath(sciezka));
         }
+        lstFiles.setAdapter(pages_adapter);
+        Log.i("ZimDroid", "Pages in dir: "+String.valueOf(pages_adapter.getCount()));
+        pages_adapter.notifyDataSetChanged();
     }
 
     @Override

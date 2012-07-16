@@ -3,13 +3,10 @@
 
     <string name="app_name">ZimDroid</string>
     <string name="menu_settings">Ustawienia</string>
-    <string name="title_activity_zim_view">Przeglądaj</string>
     <string name="title_activity_select_notepad">Wybierz notatnik</string>
     <string name="button_add_notepad">Dodaj notatnik</string>
-    <string name="title_activity_add_notepad">Dodaj notatnik</string>
-    <string name="title_activity_display_page">Przeglądaj</string>
+    <string name="title_activity_display_page">Przeglądaj stronę</string>
     <string name="title_activity_display_folder">Wybierz stronę</string>
     <string name="title_activity_select_file">Wybierz plik *.zim</string>
-    <string name="btnRootNote">Strona Główna</string>
 
 </resources>

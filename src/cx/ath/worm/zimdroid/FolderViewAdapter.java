@@ -64,7 +64,7 @@ public class FolderViewAdapter extends BaseAdapter {
 		TextView pagename = (TextView)row.findViewById(R.id.txtPage);
 		Button nextdir = (Button)row.findViewById(R.id.btnEnter);
 		nextdir.setVisibility(Button.GONE);
-		pagename.setText(iso(mPages.get(position).getName()));
+		pagename.setText(iso(mPages.get(position).getPrintName()));
 		Log.i("ZimDroid", "Adding item: "+mPages.get(position).getName()+" / kids:"+mPages.get(position).getChildren());
 		Log.i("ZimDroid","Adapter: "+mPages.get(position).getName()+" gC: "+mPages.get(position).getChildren());
 		if(mPages.get(position).getChildren() != 0) {
@@ -73,7 +73,7 @@ public class FolderViewAdapter extends BaseAdapter {
 		row.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.i("ZimDroid","ListClick: "+mPages.get(position).getName());
+				Log.i("ZimDroid","ListClick: "+mPages.get(position).getPrintName());
 				Intent intDisplayPage = new Intent(v.getContext(),display_page.class);
        			Bundle bundle = new Bundle();
        			bundle.putString("page_path", mPages.get(position).getPath().getPath());
@@ -87,11 +87,11 @@ public class FolderViewAdapter extends BaseAdapter {
 		nextdir.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.i("ZimDroid","BtnClick: "+mPages.get(position).getName());
+				Log.i("ZimDroid","BtnClick: "+mPages.get(position).getPrintName());
 				Intent intDisplayFolder = new Intent(v.getContext(),display_folder.class);
        			Bundle bundle = new Bundle();
-       			bundle.putString("notepad_path", mPages.get(position).getPath().getPath());
-       			bundle.putString("folder_inside", mPages.get(position).getPath().getParent());
+       			bundle.putString("notepad_path", mPages.get(position).getNotepadFile().getPath());
+       			bundle.putString("folder_inside", (mPages.get(position).getOwnFolder().getPath()));
        			intDisplayFolder.putExtras(bundle);
        			intDisplayFolder.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         		mContext.startActivity(intDisplayFolder);

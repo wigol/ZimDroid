@@ -47,15 +47,12 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f050000;
-        public static final int btnRootNote=0x7f050009;
-        public static final int button_add_notepad=0x7f050004;
+        public static final int button_add_notepad=0x7f050003;
         public static final int menu_settings=0x7f050001;
-        public static final int title_activity_add_notepad=0x7f050005;
-        public static final int title_activity_display_folder=0x7f050007;
-        public static final int title_activity_display_page=0x7f050006;
-        public static final int title_activity_select_file=0x7f050008;
-        public static final int title_activity_select_notepad=0x7f050003;
-        public static final int title_activity_zim_view=0x7f050002;
+        public static final int title_activity_display_folder=0x7f050005;
+        public static final int title_activity_display_page=0x7f050004;
+        public static final int title_activity_select_file=0x7f050006;
+        public static final int title_activity_select_notepad=0x7f050002;
     }
     public static final class style {
         public static final int AppTheme=0x7f060000;
