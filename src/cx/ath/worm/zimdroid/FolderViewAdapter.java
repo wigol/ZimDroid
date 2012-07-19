@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -64,13 +65,15 @@ public class FolderViewAdapter extends BaseAdapter {
 		TextView pagename = (TextView)row.findViewById(R.id.txtPage);
 		Button nextdir = (Button)row.findViewById(R.id.btnEnter);
 		nextdir.setVisibility(Button.GONE);
-		pagename.setText(iso(mPages.get(position).getPrintName()));
+		pagename.setLongClickable(true);
+		pagename.setText(utf(mPages.get(position).getPrintName()));
 		Log.i("ZimDroid", "Adding item: "+mPages.get(position).getName()+" / kids:"+mPages.get(position).getChildren());
 		Log.i("ZimDroid","Adapter: "+mPages.get(position).getName()+" gC: "+mPages.get(position).getChildren());
 		if(mPages.get(position).getChildren() != 0) {
+			nextdir.setText(String.valueOf(mPages.get(position).getChildren()));
 			nextdir.setVisibility(Button.VISIBLE);
 		}
-		row.setOnClickListener(new View.OnClickListener() {
+		pagename.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.i("ZimDroid","ListClick: "+mPages.get(position).getPrintName());
@@ -78,9 +81,25 @@ public class FolderViewAdapter extends BaseAdapter {
        			Bundle bundle = new Bundle();
        			bundle.putString("page_path", mPages.get(position).getPath().getPath());
        			bundle.putString("prev_view", mPages.get(position).getPath().getParent());
+       			bundle.putString("notepad_path", mPages.get(position).getNotepadFile().getPath());
        			intDisplayPage.putExtras(bundle);
        			intDisplayPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         		mContext.startActivity(intDisplayPage);
+			}
+		});
+		
+		pagename.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				Log.i("ZimDroid","ListLongClick: "+mPages.get(position).getPrintName());
+				Intent intEditPage = new Intent(v.getContext(),edit_page.class);
+       			Bundle bundle = new Bundle();
+       			bundle.putString("page_path", mPages.get(position).getPath().getPath());
+       			bundle.putString("prev_view", mPages.get(position).getPath().getParent());
+       			intEditPage.putExtras(bundle);
+       			intEditPage.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        		mContext.startActivity(intEditPage);
+				return true;
 			}
 		});
 		
@@ -92,6 +111,7 @@ public class FolderViewAdapter extends BaseAdapter {
        			Bundle bundle = new Bundle();
        			bundle.putString("notepad_path", mPages.get(position).getNotepadFile().getPath());
        			bundle.putString("folder_inside", (mPages.get(position).getOwnFolder().getPath()));
+       			bundle.putString("notepad_path", mPages.get(position).getNotepadFile().getPath());
        			intDisplayFolder.putExtras(bundle);
        			intDisplayFolder.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         		mContext.startActivity(intDisplayFolder);

@@ -8,5 +8,8 @@
     <string name="title_activity_display_page">Przeglądaj stronę</string>
     <string name="title_activity_display_folder">Wybierz stronę</string>
     <string name="title_activity_select_file">Wybierz plik *.zim</string>
+    <string name="title_activity_edit_page">Edytuj stronę</string>
+    <string name="save_page">Zapisz stronę</string>
+    <string name="add_page">Dodaj stronę</string>
 
 </resources>

@@ -14,10 +14,12 @@ import com.petebevin.markdown.MarkdownProcessor;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.support.v4.app.NavUtils;
 
 import us.feras.mdv.MarkdownView;
@@ -34,35 +36,78 @@ public class display_page extends Activity {
 		return new String(bytes);
 	}
 	
+	public String LinkHandler(String text) {
+		if(text.contains("|")) {
+			// link with description:
+			String[] divide = text.split("|");
+			return "<a href='"+divide[0]+"'>"+divide[1]+"</a>";					
+		}
+		if(text.contains(":") && !text.contains("")) {
+			//link to notepad page:
+			
+		}
+		return text;
+	}
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_page);
         Bundle bundle = this.getIntent().getExtras();
         File path = new File(bundle.getString("page_path"));
+        File zimfile = new File(bundle.getString("notepad_path"));
         if(path == null)
         	finish();
         else {
         	WebView mdView = (WebView) findViewById(R.id.mdView);
+        	mdView.setWebViewClient(new WebViewClient()
+            {
+        		@Override
+        		public boolean shouldOverrideUrlLoading(WebView wv, String url) {
+        		    if(url.contains("mailto:")){
+        		    	Intent intent = null;
+        		    	intent = new Intent(Intent.ACTION_SEND);
+        		    	intent.setType("plain/text");
+        		    	intent.putExtra(Intent.EXTRA_EMAIL, url.substring(6));
+        		    	startActivity(Intent.createChooser(intent, ""));
+        		    }
+        		    else if(url.contains("zim:")) {
+        		    	
+        		    }
+        		    return true;
+        		}                      
+        	});
         	try {
         		String Content = "";
-        		BufferedReader reader = new BufferedReader(new FileReader(path));
-				String line;
-				while( (line = reader.readLine()) != null) {
-					line = line.replaceAll("([*][*]([A-Za-z0-9: +-]+)[*][*])","<b>$2</b>");
-					line = line.replaceAll("([/][/]([A-Za-z0-9: +-]+)[/][/])","<em>$2</em>");
-					line = line.replaceAll("([=]{6}([\\w: +-]+)[=]{6})","<h3>$2</h3>");
-					line = line.replaceAll("(^[•] ([\\w: +-]+))","<li>$2</li>");
-					Content+=line;
-					Content+="<br />";
-				}
-				//Ooh, so dirty:
-				//Content = Content.replace("<br /><br />", "<br />");
-				Content = Content.replace("<br /><h3>", "<h3>");
-				Content = Content.replace("</h3><br />", "</h3>");
-				reader.close();
-				mdView.getSettings().setDefaultTextEncodingName("utf-8");
-				mdView.loadData(Content, "text/html", "utf-8");
+        		if(!(path.exists())) {
+        			
+        		}
+        		else {
+        			BufferedReader reader = new BufferedReader(new FileReader(path));
+        			String line;
+        			while( (line = reader.readLine()) != null) {
+        				//omitting "not important" rows:
+        				if(line.contains("Content-Type") || line.contains("Wiki-Format") || line.contains("Creation-Date"))
+        					continue;
+        				line = line.replaceAll("([*][*]([\\w: +-]+)[*][*])","<b>$2</b>"); //for bold text
+        				line = line.replaceAll("([/][/]([\\w: +-]+)[/][/])","<em>$2</em>"); //for italics
+        				line = line.replaceAll("([=]{6}([\\w: +-]+)[=]{6})","<h3>$2</h3>"); //for headers
+        				line = line.replaceAll("(^[•] ([\\w: +-]+))","<li>$2</li>"); //for lists TODO: see below.
+        				line = line.replaceAll("(^[*][*]{0} ([\\w: +-]+))","<li>$2</li>"); //for list TODO: set <ul>/<ol> counter
+        				line = line.replaceAll("([\\[][\\[]([\\p{Print}]+)[\\]][\\]])", LinkHandler("$2")); //detect wiki and regular links
+        				line = line.replaceAll("([a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+)","<a href='mailto:$1'>$1</a>"); //email to mailto link.
+        				line = line.replaceAll("", "");
+        				Content+=line;
+        				Content+="<br />";
+        			}
+        			//Ooh, so dirty:
+        			//Content = Content.replace("<br /><br />", "<br />");
+        			Content = Content.replace("<br /><h3>", "<h3>");
+        			Content = Content.replace("</h3><br />", "</h3>");
+        			reader.close();
+        			mdView.getSettings().setDefaultTextEncodingName("utf-8");
+        			mdView.loadData(Content, "text/html", "utf-8");
+        		}
         	}
         	catch(IOException e) {
         		Log.i("ZimDroid", "Cannot read file:"+path.getPath());

@@ -59,6 +59,11 @@ public class ZimNotepad {
 			Log.i("ZimDroid", "gC: "+kat.getPath());
 			children.clear();
 			if(kat.exists() && kat.isDirectory()) {
+				if(kat.listFiles().length == 0) {
+					//folder is empty
+					kat.delete();
+					return 0;
+				}
 				String[] pliki = kat.list();
 				for(String apped : pliki) {
 					if(apped.contains(".txt")) {
@@ -72,7 +77,7 @@ public class ZimNotepad {
 				return 0;
 			}
 		
-		private String getDefaultContent() {
+		public String getDefaultContent() {
 			Time today = new Time(Time.getCurrentTimezone());
 			today.setToNow();
 			return("==="+Name+"===\n"+"Created on "+today.format("%d %B %G")+"\n");
@@ -146,13 +151,14 @@ public class ZimNotepad {
 			Log.i("ZimDroid", "EXC: IOException while reading zim file. ");
 		}
 	}
+	
 	public ZimPage getPageByName(String Nazwa, ArrayList<ZimPage> pagez) {
 		for(ZimPage akt : pagez) {
 			if(akt.Name.equals(Nazwa)) {
 				Log.i("ZimDroid","PageByName found:"+akt.getName());
 				return akt;
 			}
-				
+
 		}
 		return null;
 	}
@@ -179,5 +185,23 @@ public class ZimNotepad {
 			Log.i("ZimDroid", "Children:"+lista.size());
 		}
 		return lista;
+	}
+	
+	public boolean addPage(String Name, File location) {
+
+		if(location.exists() && location.canWrite()) {
+			File fullpath = new File(location.getPath()+"/"+Name+".txt");
+			if(fullpath.exists()) {
+				return false;
+			}
+			else {
+				ZimPage nowa = new ZimPage(Name, location, this.zimFile);
+				return true;
+			}
+		}
+		else{
+			Log.i("ZimDroid", "New page failed.");
+			return false;
+		}
 	}
 }

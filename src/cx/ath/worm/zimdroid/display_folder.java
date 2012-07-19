@@ -28,8 +28,7 @@ public class display_folder extends Activity {
         setContentView(R.layout.activity_display_folder);
         Context ctx = getApplicationContext();
     	ListView lstFiles = (ListView) findViewById(R.id.lstFiles);
-    	if(lstFiles == null)
-    		Log.i("ZimDroid", "lstFiles NULL!");
+    	lstFiles.setLongClickable(true);
         Log.i("ZimDroid", "inicjalizacja activity");
         Bundle bundle = this.getIntent().getExtras();
         String notepad_file = bundle.getString("notepad_path");
@@ -57,5 +56,12 @@ public class display_folder extends Activity {
         return true;
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	if(item.getItemId() == R.id.add_page) {
+    		Log.i("ZimDroid", "menuitem add page!");
+    		//TODO: add new page dialog.
+    	}
+    	return true;
+    }
     
 }
