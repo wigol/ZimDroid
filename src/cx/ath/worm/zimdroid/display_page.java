@@ -90,9 +90,10 @@ public class display_page extends Activity {
         				if(line.contains("Content-Type") || line.contains("Wiki-Format") || line.contains("Creation-Date"))
         					continue;
         				line = line.replaceAll("([*][*]([\\w: +-]+)[*][*])","<b>$2</b>"); //for bold text
-        				line = line.replaceAll("([/][/]([\\w: +-]+)[/][/])","<em>$2</em>"); //for italics
+        				//line = line.replaceAll("([/][/]([\\w: +-]+)[/][/])","<em>$2</em>"); //for italics
         				line = line.replaceAll("([=]{6}([\\w: +-]+)[=]{6})","<h3>$2</h3>"); //for headers
         				line = line.replaceAll("(^[•] ([\\w: +-]+))","<li>$2</li>"); //for lists TODO: see below.
+        				line = line.replaceAll("(^[*] ([\\w: +-]+))","<li>$2</li>");
         				line = line.replaceAll("(^[*][*]{0} ([\\w: +-]+))","<li>$2</li>"); //for list TODO: set <ul>/<ol> counter
         				line = line.replaceAll("([\\[][\\[]([\\p{Print}]+)[\\]][\\]])", LinkHandler("$2")); //detect wiki and regular links
         				line = line.replaceAll("([a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+)","<a href='mailto:$1'>$1</a>"); //email to mailto link.
@@ -104,6 +105,7 @@ public class display_page extends Activity {
         			//Content = Content.replace("<br /><br />", "<br />");
         			Content = Content.replace("<br /><h3>", "<h3>");
         			Content = Content.replace("</h3><br />", "</h3>");
+        			Content = Content.replaceAll("([/][/]([\\w: +-]+)[/][/])","<em>$2</em>"); //for italics
         			reader.close();
         			mdView.getSettings().setDefaultTextEncodingName("utf-8");
         			mdView.loadData(Content, "text/html", "utf-8");
