@@ -8,11 +8,13 @@ import java.io.IOException;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.Scroller;
 import android.widget.Toast;
 import android.support.v4.app.NavUtils;
 
@@ -35,7 +37,7 @@ public class edit_page extends Activity {
 				Toast.makeText(this, "Cannot save page."+String.valueOf(path.canWrite()), Toast.LENGTH_LONG).show();
 			}
 		} catch (IOException e) {
-			Log.i("ZimDroid", "Err saving page:"+e.getLocalizedMessage());
+			Log.i("ZimDroid", "Error while saving page:"+e.getLocalizedMessage());
 		}
 
 		return false;
@@ -44,13 +46,20 @@ public class edit_page extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("ZimDroid", "przed");
         setContentView(R.layout.activity_edit_page);
+        Log.i("ZimDroid", "po");
         Bundle bundle = this.getIntent().getExtras();
         path = new File(bundle.getString("page_path"));
         if(path == null)
         	finish();
         else {
         	edtPage = (EditText) findViewById(R.id.edtPage);
+        	//edtPage.setScroller(new Scroller(getApplicationContext()));
+        	//edtPage.setMaxLines(1);
+        	//edtPage.setVerticalScrollBarEnabled(true);
+        	//edtPage.setMovementMethod(new ScrollingMovementMethod());
+        	
         	try {
         		Content = "";
         		BufferedReader reader = new BufferedReader(new FileReader(path));

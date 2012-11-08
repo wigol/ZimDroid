@@ -1,7 +1,12 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:id="@+id/skrol" >
+  
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="wrap_content" >
 
     <EditText
         android:id="@+id/edtPage"
@@ -11,10 +16,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:gravity="top"
-        android:ems="10" >
+        android:gravity="top" >
 
         <requestFocus />
     </EditText>
 
 </RelativeLayout>
+</ScrollView>

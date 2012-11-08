@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.http.util.EncodingUtils;
 
-import com.petebevin.markdown.MarkdownProcessor;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -21,8 +20,6 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.support.v4.app.NavUtils;
-
-import us.feras.mdv.MarkdownView;
 
 public class display_page extends Activity {
 
